@@ -1,11 +1,12 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using Android.Webkit;
 
 namespace LiteID
 {
     [Activity(Label = "LiteID", MainLauncher = true, Icon = "@drawable/icon4sc_256", Theme = "@android:style/Theme.DeviceDefault.Light.NoActionBar")]
-    public class MainActivity : Activity
+    public class DocList : Activity
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -14,10 +15,11 @@ namespace LiteID
             SetContentView (Resource.Layout.Main);
             Button randomize = FindViewById<Button>(Resource.Id.button1);
             Button clearlist = FindViewById<Button>(Resource.Id.button4);
-            Button writeout = FindViewById<Button>(Resource.Id.button2);
-            Button readin = FindViewById<Button>(Resource.Id.button3);
+            Button bOpt = FindViewById<Button>(Resource.Id.bOptions);
+            Button bAdd = FindViewById<Button>(Resource.Id.bAddDoc);
 
-            DocumentList mainlist = new DocumentList();
+            DocumentList mainlist = new DocumentList("documents.lxm");
+            UpdateList(mainlist);
 
             randomize.Click += delegate
             {
@@ -31,21 +33,21 @@ namespace LiteID
                 UpdateList(mainlist);
             };
 
-            writeout.Click += delegate
+            bOpt.Click += delegate
             {
-                mainlist.SaveList("documents.lxm");
-                UpdateList(mainlist);
+                StartActivity(typeof(Options));
             };
 
-            readin.Click += delegate
+            bAdd.Click += delegate
             {
-                mainlist = new DocumentList("documents.lxm");
-                UpdateList(mainlist);
+                StartActivity(typeof(AddDoc));
             };
         }
 
         private void UpdateList(DocumentList list)
         {
+            list.SaveList("documents.lxm");
+
             LinearLayout listview = FindViewById<LinearLayout>(Resource.Id.listView);
             listview.RemoveAllViews();
 
