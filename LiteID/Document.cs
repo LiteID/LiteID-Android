@@ -56,7 +56,7 @@ public class Document
 
         string[] names = { "Document", "Work Thing", "Name", "ID", "Video", "Picture", "Evidence", "Incriminating Record", "Stolen SSN", "Unencrypted Password", "Unfinished App", "Joke Text", "Contract", "Loan" };
         Name = names.PickRandom();
-        Name += " #" + gen.Next(100);
+        Name += " #" + (gen.Next(99) + 1);
 
         DateTime start = new DateTime(2016, 1, 1);
         //int range = (DateTime.Today - start).Days;
@@ -79,7 +79,15 @@ public class DocumentList
     {
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         string filename = Path.Combine(path, filepath);
-        TextReader reader = new StreamReader(filename);
+        TextReader reader;
+        try
+        {
+            reader = new StreamReader(filename);
+        }
+        catch
+        {
+            return;
+        }
         Documents = (List<Document>)dlser.Deserialize(reader);
         reader.Close();
     }
