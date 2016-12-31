@@ -5,7 +5,7 @@ using Android.Webkit;
 
 namespace LiteID
 {
-    [Activity(Label = "LiteID", MainLauncher = true, Icon = "@drawable/icon4sc_256", Theme = "@android:style/Theme.DeviceDefault.Light.NoActionBar")]
+    [Activity(Label = "LiteID", MainLauncher = true)]
     public class DocList : Activity
     {
         protected override void OnCreate(Bundle bundle)

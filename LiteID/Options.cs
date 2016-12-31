@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace LiteID
 {
-    [Activity(Label = "LiteID Options", Icon = "@drawable/icon4sc_256", Theme = "@android:style/Theme.DeviceDefault.Light.NoActionBar")]
+    [Activity(Label = "LiteID Options")]
     public class Options : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
