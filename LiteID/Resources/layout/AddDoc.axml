@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -29,10 +30,124 @@
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="8dp"
+        android:layout_weight="1">
+        <TextView
+            android:text="Document Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textSize="16dp"
+            android:textColor="#FF333333" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textTitle"
+            android:singleLine="true" />
+        <TextView
+            android:text="Document Type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:textSize="16dp"
+            android:textColor="#FF333333" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout3"
+            android:background="@drawable/group_border">
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioGroup1"
+                android:padding="4dp">
+                <TextView
+                    android:text="Local File"
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingLeft="2dp"
+                    android:textSize="15dp"
+                    android:textColor="#FF333333" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout4">
+                    <RadioButton
+                        android:checked="true"
+                        android:id="@+id/radioFile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <Button
+                        android:text="Select File"
+                        android:id="@+id/buttonFile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <TextView
+                    android:text="Plain Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView5"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="4dp"
+                    android:textSize="15dp"
+                    android:textColor="#FF333333" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout5"
+                    android:minHeight="40dp">
+                    <RadioButton
+                        android:id="@+id/radioText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <EditText
+                        android:inputType="textMultiLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/textContent"
+                        android:scrollHorizontally="true"
+                        android:scrollbars="vertical"
+                        android:verticalScrollbarPosition="right"
+                        android:minHeight="40dp" />
+                </LinearLayout>
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout6"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+        <Button
+            android:text="Create"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:id="@+id/buttonCreate"
+            android:layout_weight="1" />
+        <Button
+            android:text="Discard"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:id="@+id/buttonDiscard"
+            android:layout_weight="1" />
+    </LinearLayout>
 </LinearLayout>
