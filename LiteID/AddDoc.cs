@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Android.App;
 using Android.Content;
@@ -49,14 +50,22 @@ namespace LiteID
 
             buttonFile.Click += delegate
             {
+                radioFile.Checked = true;
+                radioText.Checked = false;
                 Intent getFileIntent = new Intent(Intent.ActionGetContent);
-                getFileIntent.SetType("*/*");
+                getFileIntent.SetType("file/*");
                 StartActivityForResult(getFileIntent, 0);
             };
 
             radioText.Click += delegate
             {
                 radioFile.Checked = false;
+            };
+
+            textContent.Click += delegate
+            {
+                radioFile.Checked = false;
+                radioText.Checked = true;
             };
 
             buttonCreate.Click += delegate
@@ -68,6 +77,25 @@ namespace LiteID
             {
                 Finish();
             };
+        }
+
+        private Uri newFileUri;
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            Uri file = new Uri(data.DataString);
+            if (file.IsFile)
+            {
+                newFileUri = file;
+                Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
+                buttonFile.Text = Path.GetFileName(file.AbsolutePath);
+            }
+            else
+            {
+                Toast toast = Toast.MakeText(this.ApplicationContext, "You can only select a local file on your device", ToastLength.Long);
+                toast.Show();
+            }
         }
     }
 }
