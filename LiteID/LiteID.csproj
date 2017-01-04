@@ -64,6 +64,7 @@
     <Compile Include="AddDoc.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocList.cs" />
+    <Compile Include="MimeTypes.cs" />
     <Compile Include="PickRandom.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
