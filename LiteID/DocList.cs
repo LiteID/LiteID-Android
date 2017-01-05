@@ -15,8 +15,6 @@ namespace LiteID
             base.OnCreate(bundle);
 
             SetContentView (Resource.Layout.Main);
-            Button randomize = FindViewById<Button>(Resource.Id.button1);
-            Button clearlist = FindViewById<Button>(Resource.Id.button4);
             ImageButton bOpt = FindViewById<ImageButton>(Resource.Id.buttonOptions);
             ImageButton bAdd = FindViewById<ImageButton>(Resource.Id.buttonAdd);
 
@@ -25,18 +23,6 @@ namespace LiteID
             doclistAdapter = new DocListAdapter(this, mainlist);
             doclistView.Adapter = doclistAdapter;
             UpdateList(mainlist);
-
-            randomize.Click += delegate
-            {
-                mainlist.Randomize();
-                UpdateList(mainlist);
-            };
-
-            clearlist.Click += delegate
-            {
-                mainlist.Documents.Clear();
-                UpdateList(mainlist);
-            };
 
             bOpt.Click += delegate
             {

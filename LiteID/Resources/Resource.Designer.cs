@@ -90,12 +90,6 @@ namespace LiteID
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060016
-			public const int button1 = 2131099670;
-			
-			// aapt resource value: 0x7f060017
-			public const int button4 = 2131099671;
-			
 			// aapt resource value: 0x7f060015
 			public const int buttonAdd = 2131099669;
 			
@@ -111,8 +105,8 @@ namespace LiteID
 			// aapt resource value: 0x7f060013
 			public const int buttonOptions = 2131099667;
 			
-			// aapt resource value: 0x7f060018
-			public const int docList = 2131099672;
+			// aapt resource value: 0x7f060016
+			public const int docList = 2131099670;
 			
 			// aapt resource value: 0x7f060014
 			public const int imageView1 = 2131099668;
