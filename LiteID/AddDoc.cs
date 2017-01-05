@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Util;
+using Android.Content.PM;
 
 namespace LiteID
 {
@@ -22,11 +23,12 @@ namespace LiteID
         Intent.CategoryOpenable,
     }, DataMimeTypes = new[] {
         "text/*",
-        "image/*",
-        "audio/*",
-        "video/*",
-        "application/*",
-        "message/*"
+        //"image/*",
+        //"audio/*",
+        //"video/*",
+        //"application/*",
+        //"message/*",
+        "file/*"
     })]
     public class AddDoc : Activity
     {
@@ -52,9 +54,18 @@ namespace LiteID
             {
                 radioFile.Checked = true;
                 radioText.Checked = false;
+                PackageManager pm = ApplicationContext.PackageManager;
                 Intent getFileIntent = new Intent(Intent.ActionGetContent);
                 getFileIntent.SetType("file/*");
-                StartActivityForResult(getFileIntent, 0);
+                if (getFileIntent.ResolveActivity(pm) != null)
+                {
+                    StartActivityForResult(getFileIntent, 0);
+                }
+                else
+                {
+                    Toast toast = Toast.MakeText(this.ApplicationContext, "There are no file browsers!", ToastLength.Long);
+                    toast.Show();
+                }
             };
 
             radioText.Click += delegate
@@ -77,6 +88,24 @@ namespace LiteID
             {
                 Finish();
             };
+
+            if (Intent.HasExtra(Intent.ExtraText))
+            {
+                radioFile.Checked = false;
+                radioText.Checked = true;
+                textContent.Text = Intent.GetStringExtra(Intent.ExtraText);
+            }
+            else if (Intent.DataString != null)
+            {
+                Uri file = new Uri(Intent.DataString);
+                if (file.IsFile)
+                {
+                    newFileUri = file;
+                    buttonFile.Text = Path.GetFileName(file.AbsolutePath);
+                    radioFile.Checked = true;
+                    radioText.Checked = false;
+                }
+            }
         }
 
         private Uri newFileUri;
@@ -84,17 +113,20 @@ namespace LiteID
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            Uri file = new Uri(data.DataString);
-            if (file.IsFile)
+            if (resultCode == Result.Ok)
             {
-                newFileUri = file;
-                Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
-                buttonFile.Text = Path.GetFileName(file.AbsolutePath);
-            }
-            else
-            {
-                Toast toast = Toast.MakeText(this.ApplicationContext, "You can only select a local file on your device", ToastLength.Long);
-                toast.Show();
+                Uri file = new Uri(data.DataString);
+                if (file.IsFile)
+                {
+                    newFileUri = file;
+                    Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
+                    buttonFile.Text = Path.GetFileName(file.AbsolutePath);
+                }
+                else
+                {
+                    Toast toast = Toast.MakeText(this.ApplicationContext, "You can only select a local file on your device", ToastLength.Long);
+                    toast.Show();
+                }
             }
         }
     }
