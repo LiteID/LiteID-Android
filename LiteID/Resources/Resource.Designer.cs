@@ -212,6 +212,22 @@ namespace LiteID
 			{
 			}
 		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int LiteID_Main = 2131034112;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
+			{
+			}
+		}
 	}
 }
 #pragma warning restore 1591

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="LiteID.Main" parent="@android:style/Theme.DeviceDefault.Light">
+    <item name="android:windowBackground">@drawable/bg_grad_256</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>
