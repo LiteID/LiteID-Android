@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocListAdapater.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="AddDoc.cs" />
     <Compile Include="Document.cs" />

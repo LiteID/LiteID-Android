@@ -8,6 +8,8 @@ namespace LiteID
     [Activity(Label = "LiteID", MainLauncher = true)]
     public class DocList : Activity
     {
+        private DocListAdapter doclistAdapter;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -19,6 +21,9 @@ namespace LiteID
             ImageButton bAdd = FindViewById<ImageButton>(Resource.Id.buttonAdd);
 
             DocumentList mainlist = new DocumentList("documents.lxm");
+            ListView doclistView = FindViewById<ListView>(Resource.Id.docList);
+            doclistAdapter = new DocListAdapter(this, mainlist);
+            doclistView.Adapter = doclistAdapter;
             UpdateList(mainlist);
 
             randomize.Click += delegate
@@ -43,21 +48,11 @@ namespace LiteID
                 StartActivity(typeof(AddDoc));
             };
         }
-
+        
         private void UpdateList(DocumentList list)
         {
             list.SaveList("documents.lxm");
-
-            LinearLayout listview = FindViewById<LinearLayout>(Resource.Id.listView);
-            listview.RemoveAllViews();
-
-            foreach (Document doc in list.Documents)
-            {
-                TextView label = new TextView(this.ApplicationContext);
-                label.Text = doc.Name;
-                label.SetTextColor(Android.Graphics.Color.Black);
-                listview.AddView(label);
-            }
+            doclistAdapter.NotifyDataSetChanged();
         }
     }
 }
