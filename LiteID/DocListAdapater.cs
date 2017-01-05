@@ -33,10 +33,14 @@ public class DocListAdapter : BaseAdapter<Document>
     }
     public override View GetView(int position, View convertView, ViewGroup parent)
     {
-        View view = convertView; // re-use an existing view, if one is available
-        if (view == null) // otherwise create a new one
+        View view = convertView;
+        if (view == null)
+        {
             view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, null);
-        view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = documents.Documents[position].Name;
+        }
+        TextView textView = view.FindViewById<TextView>(Android.Resource.Id.Text1);
+        textView.Text = documents.Documents[position].Name;
+        textView.SetTextColor(Android.Graphics.Color.Black);
         return view;
     }
 }
