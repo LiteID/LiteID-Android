@@ -15,8 +15,8 @@ namespace LiteID
             SetContentView (Resource.Layout.Main);
             Button randomize = FindViewById<Button>(Resource.Id.button1);
             Button clearlist = FindViewById<Button>(Resource.Id.button4);
-            Button bOpt = FindViewById<Button>(Resource.Id.bOptions);
-            Button bAdd = FindViewById<Button>(Resource.Id.bAddDoc);
+            ImageButton bOpt = FindViewById<ImageButton>(Resource.Id.buttonOptions);
+            ImageButton bAdd = FindViewById<ImageButton>(Resource.Id.buttonAdd);
 
             DocumentList mainlist = new DocumentList("documents.lxm");
             UpdateList(mainlist);
