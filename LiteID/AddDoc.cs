@@ -97,7 +97,7 @@ namespace LiteID
                     {
                         Document newDoc = new Document();
                         newDoc.Name = textTitle.Text;
-                        newDoc.IngestDocument(ContentResolver.OpenInputStream(newFileUri));
+                        newDoc.IngestDocument(ContentResolver.OpenInputStream(newFileUri), newMimeType);
                         DocumentList docList = new DocumentList("documents.lxm");
                         docList.Documents.Add(newDoc);
                         docList.SaveList("documents.lxm");
@@ -142,6 +142,7 @@ namespace LiteID
         }
 
         private Android.Net.Uri newFileUri;
+        private string newMimeType;
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
@@ -154,14 +155,19 @@ namespace LiteID
                 {
                     newFileUri = data.Data;
                     buttonFile.Text = Path.GetFileName(file.AbsolutePath);
+                    newMimeType = MimeTypes.GetMimeType(Path.GetExtension(file.AbsolutePath));
                 }
                 else if (file.Scheme == "content")
                 {
                     newFileUri = data.Data;
-                    string[] columns = { Android.Provider.MediaStore.Files.FileColumns.DisplayName };
+                    string[] columns = {
+                        Android.Provider.MediaStore.Files.FileColumns.DisplayName,
+                        Android.Provider.MediaStore.Files.FileColumns.MimeType
+                    };
                     ICursor cursor = ContentResolver.Query(data.Data, columns, null, null, null);
                     cursor.MoveToFirst();
                     buttonFile.Text = cursor.GetString(0);
+                    newMimeType = cursor.GetString(1);
                     cursor.Close();
                 }
                 else

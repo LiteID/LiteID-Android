@@ -6,33 +6,14 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-//Placeholder class for the hash of a document
-//Constructor initializes 32 bytes of random numbers
-//ToString returns as hex string
-public class BHash
-{
-    [XmlIgnore]
-    public Byte[] HashData = new Byte[32];
-    public BHash()
-    {
-        Random random = new Random();
-        random.NextBytes(HashData);
-    }
-    public override string ToString()
-    {
-        StringBuilder hex = new StringBuilder(HashData.Length * 2);
-        foreach (byte b in HashData) hex.AppendFormat("{0:x2}", b);
-        return hex.ToString();
-    }
-}
-
 [Serializable]
 public class Document
 {
     [XmlAttribute]
     public string ID;
-    private byte[] Hash;
-    private SHA256 Hasher = SHA256.Create();
+    public byte[] Hash;
+    public byte[] Salt;
+    private SHA256 Hasher;
     public string Name;
     public string MimeType;
     public bool TextDoc; //True is yes
@@ -41,6 +22,7 @@ public class Document
     //Ingest file as document
     public void IngestDocument(Stream FileDoc, string MimeType)
     {
+        this.MimeType = MimeType;
         GIngestDocument(FileDoc);
     }
 
@@ -61,14 +43,30 @@ public class Document
     {
         IngestionTime = DateTime.Now;
 
-        Hash = Hasher.ComputeHash(DocStream);
-        ID = BytesToHex(Hash);
-
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string tempname = Path.Combine(path, "ingest.temp");
+        FileStream Writer = File.OpenWrite(tempname);
+        Hasher = SHA256.Create();
+        byte[] ingest = new byte[32768];
+        int read = 0;
+        while((read = DocStream.Read(ingest, 0, 32768)) > 0)
+        {
+            Hasher.TransformBlock(ingest, 0, read, ingest, 0);
+            Writer.Write(ingest, 0, read);
+        }
+        Writer.Close();
+
+        Salt = new byte[32];
+        Random random = new Random();
+        random.NextBytes(Salt);
+        Hasher.TransformFinalBlock(Salt, 0, Salt.Length);
+        Hash = Hasher.Hash;
+        ID = BytesToHex(Hash);
+        Hasher.Dispose();
+
         string filename = Path.Combine(path, ID);
-        StreamWriter writer = new StreamWriter(filename, false);
-        DocStream.CopyTo(writer.BaseStream);
-        writer.Close();
+        File.Move(tempname, filename);
+        File.Delete(tempname);
     }
 
     //Convert byte array to hex string
