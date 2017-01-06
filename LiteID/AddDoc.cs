@@ -12,9 +12,8 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using Android.Content.PM;
-using Android.Database;
 using Android;
-using static Android.Manifest;
+using Android.Database;
 
 namespace LiteID
 {
@@ -38,7 +37,7 @@ namespace LiteID
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M
                 && CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Android.Content.PM.Permission.Granted)
             {
@@ -96,20 +95,32 @@ namespace LiteID
                 {
                     if (radioFile.Checked && newFileUri != null)
                     {
-                        Toast.MakeText(this.ApplicationContext, "Adding a file isn't implemented", ToastLength.Long).Show();
-                        //Finish();
-                    }
-                    else if (radioText.Checked && textContent.Text != "")
-                    {
                         Document newDoc = new Document();
-                        newDoc.RandomDocument(new Random());
                         newDoc.Name = textTitle.Text;
-                        newDoc.IngestionTime = DateTime.Now;
+                        newDoc.IngestDocument(ContentResolver.OpenInputStream(newFileUri));
                         DocumentList docList = new DocumentList("documents.lxm");
                         docList.Documents.Add(newDoc);
                         docList.SaveList("documents.lxm");
                         Finish();
                     }
+                    else if (radioText.Checked && textContent.Text != "")
+                    {
+                        Document newDoc = new Document();
+                        newDoc.Name = textTitle.Text;
+                        newDoc.IngestDocument(textContent.Text);
+                        DocumentList docList = new DocumentList("documents.lxm");
+                        docList.Documents.Add(newDoc);
+                        docList.SaveList("documents.lxm");
+                        Finish();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this.ApplicationContext, "You must set the content", ToastLength.Long).Show();
+                    }
+                }
+                else
+                {
+                    Toast.MakeText(this.ApplicationContext, "You must set a title", ToastLength.Long).Show();
                 }
             };
 
@@ -126,18 +137,11 @@ namespace LiteID
             }
             else if (Intent.DataString != null)
             {
-                Uri file = new Uri(Intent.DataString);
-                if (file.IsFile)
-                {
-                    newFileUri = file;
-                    buttonFile.Text = Path.GetFileName(file.AbsolutePath);
-                    radioFile.Checked = true;
-                    radioText.Checked = false;
-                }
+                OnActivityResult(1, Result.Ok, Intent);
             }
         }
 
-        private Uri newFileUri;
+        private Android.Net.Uri newFileUri;
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
@@ -145,20 +149,20 @@ namespace LiteID
             if (resultCode == Result.Ok)
             {
                 Uri file = new Uri(data.DataString);
-                Android.Net.Uri aURI = Android.Net.Uri.Parse(file.ToString());
                 Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
                 if (file.Scheme == "file")
                 {
-                    newFileUri = file;
+                    newFileUri = data.Data;
                     buttonFile.Text = Path.GetFileName(file.AbsolutePath);
                 }
                 else if (file.Scheme == "content")
                 {
-                    newFileUri = file;
+                    newFileUri = data.Data;
                     string[] columns = { Android.Provider.MediaStore.Files.FileColumns.DisplayName };
                     ICursor cursor = ContentResolver.Query(data.Data, columns, null, null, null);
                     cursor.MoveToFirst();
                     buttonFile.Text = cursor.GetString(0);
+                    cursor.Close();
                 }
                 else
                 {

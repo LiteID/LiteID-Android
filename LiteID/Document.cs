@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 //Placeholder class for the hash of a document
 //Constructor initializes 32 bytes of random numbers
@@ -30,28 +31,57 @@ public class Document
 {
     [XmlAttribute]
     public string ID;
-    [XmlIgnore]
-    public BHash Hash;
+    private byte[] Hash;
+    private SHA256 Hasher = SHA256.Create();
     public string Name;
-    //TODO: Original file name or extension?
+    public string MimeType;
+    public bool TextDoc; //True is yes
     public DateTime IngestionTime;
 
     //Ingest file as document
-    public void IngestDocument(Uri URI)
+    public void IngestDocument(Stream FileDoc, string MimeType)
     {
-
+        GIngestDocument(FileDoc);
     }
 
     //Ingest string as document
     public void IngestDocument(string TextDoc)
     {
+        MemoryStream stream = new MemoryStream();
+        StreamWriter writer = new StreamWriter(stream);
+        writer.Write(TextDoc);
+        writer.Flush();
+        stream.Position = 0;
+        MimeType = "text/plain";
+        GIngestDocument(stream);
+    }
 
+    //General ingestment tasks
+    private void GIngestDocument(Stream DocStream)
+    {
+        IngestionTime = DateTime.Now;
+
+        Hash = Hasher.ComputeHash(DocStream);
+        ID = BytesToHex(Hash);
+
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string filename = Path.Combine(path, ID);
+        StreamWriter writer = new StreamWriter(filename, false);
+        DocStream.CopyTo(writer.BaseStream);
+        writer.Close();
+    }
+
+    //Convert byte array to hex string
+    private string BytesToHex(byte[] Bytes)
+    {
+        StringBuilder hex = new StringBuilder(Bytes.Length * 2);
+        foreach (byte b in Bytes) hex.AppendFormat("{0:x2}", b);
+        return hex.ToString();
     }
 
     //Initialize document with random data
     public void RandomDocument(Random gen)
     {
-        Hash = new BHash();
         ID = Hash.ToString();
 
         string[] names = { "Document", "Work Thing", "Name", "ID", "Video", "Picture", "Evidence", "Incriminating Record", "Stolen SSN", "Unencrypted Password", "Unfinished App", "Joke Text", "Contract", "Loan" };
