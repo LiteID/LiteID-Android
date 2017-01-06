@@ -21,63 +21,84 @@ public class Document
     public DateTime IngestionTime;
 
     //Ingest file as document
-    public void IngestDocument(Stream FileDoc, string MimeType)
+    public static Document IngestDocument(Stream FileDoc, string MimeType)
     {
-        this.MimeType = MimeType;
-        GIngestDocument(FileDoc);
+        Document newDoc = new Document();
+        newDoc.MimeType = MimeType;
+        GIngestDocument(newDoc, FileDoc);
+        return newDoc;
     }
 
     //Ingest string as document
-    public void IngestDocument(string TextDoc)
+    public static Document IngestDocument(string TextDoc)
     {
         MemoryStream stream = new MemoryStream();
         StreamWriter writer = new StreamWriter(stream);
         writer.Write(TextDoc);
         writer.Flush();
         stream.Position = 0;
-        MimeType = "text/plain";
-        GIngestDocument(stream);
+
+        Document newDoc = new Document();
+        newDoc.MimeType = "text/plain";
+        GIngestDocument(newDoc, stream);
+        return newDoc;
     }
 
     //General ingestment tasks
-    private void GIngestDocument(Stream DocStream)
+    private static void GIngestDocument(Document newDoc, Stream DocStream)
     {
-        IngestionTime = DateTime.Now;
+        newDoc.IngestionTime = DateTime.Now;
 
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         string tempname = Path.Combine(path, "ingest.temp");
         FileStream Writer = File.OpenWrite(tempname);
-        Hasher = SHA256.Create();
+        newDoc.Hasher = SHA256.Create();
         byte[] ingest = new byte[32768];
         int read = 0;
         while((read = DocStream.Read(ingest, 0, 32768)) > 0)
         {
-            Hasher.TransformBlock(ingest, 0, read, ingest, 0);
+            newDoc.Hasher.TransformBlock(ingest, 0, read, ingest, 0);
             Writer.Write(ingest, 0, read);
         }
         Writer.Close();
 
-        Salt = new byte[32];
+        newDoc.Salt = new byte[32];
         Random random = new Random();
-        random.NextBytes(Salt);
-        Hasher.TransformFinalBlock(Salt, 0, Salt.Length);
-        Hash = Hasher.Hash;
-        ID = BytesToHex(Hash);
-        Hasher.Dispose();
+        random.NextBytes(newDoc.Salt);
+        newDoc.Hasher.TransformFinalBlock(newDoc.Salt, 0, newDoc.Salt.Length);
+        newDoc.Hash = newDoc.Hasher.Hash;
+        newDoc.ID = BytesToHex(newDoc.Hash);
+        newDoc.Hasher.Dispose();
 
-        string filename = Path.Combine(path, ID);
+        string filename = Path.Combine(path, newDoc.ID);
         File.Move(tempname, filename);
         File.Delete(tempname);
     }
 
+    public string GetTextContent()
+    {
+        if (TextDoc)
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string filename = Path.Combine(path, ID);
+            StreamReader reader = new StreamReader(filename);
+            string textContent = reader.ReadToEnd();
+            reader.Close();
+            return textContent;
+        }
+        else
+        {
+            return "";
+        }
+    }
     //Convert byte array to hex string
-    private string BytesToHex(byte[] Bytes)
+    private static string BytesToHex(byte[] Bytes)
     {
         StringBuilder hex = new StringBuilder(Bytes.Length * 2);
         foreach (byte b in Bytes) hex.AppendFormat("{0:x2}", b);
         return hex.ToString();
     }
-
+    
     //Initialize document with random data
     public void RandomDocument(Random gen)
     {
@@ -97,7 +118,7 @@ public class Document
 public class DocumentList
 {
     public List<Document> Documents = new List<Document>();
-    private XmlSerializer dlser = new XmlSerializer(typeof(List<Document>), "Documents");
+    private XmlSerializer dlser = new XmlSerializer(typeof(List<Document>));
 
     public DocumentList()
     {
@@ -133,6 +154,11 @@ public class DocumentList
         TextWriter writer = new StreamWriter(filename, false);
         dlser.Serialize(writer, Documents);
         writer.Close();
+    }
+
+    public Document GetDocumentById(string ID)
+    {
+        return Documents.Find(x => x.ID == ID);
     }
 
     public void Randomize()

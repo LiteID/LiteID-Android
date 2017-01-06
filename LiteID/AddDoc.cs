@@ -95,9 +95,8 @@ namespace LiteID
                 {
                     if (radioFile.Checked && newFileUri != null)
                     {
-                        Document newDoc = new Document();
+                        Document newDoc = Document.IngestDocument(ContentResolver.OpenInputStream(newFileUri), newMimeType);
                         newDoc.Name = textTitle.Text;
-                        newDoc.IngestDocument(ContentResolver.OpenInputStream(newFileUri), newMimeType);
                         DocumentList docList = new DocumentList("documents.lxm");
                         docList.Documents.Add(newDoc);
                         docList.SaveList("documents.lxm");
@@ -105,9 +104,8 @@ namespace LiteID
                     }
                     else if (radioText.Checked && textContent.Text != "")
                     {
-                        Document newDoc = new Document();
+                        Document newDoc = Document.IngestDocument(textContent.Text);
                         newDoc.Name = textTitle.Text;
-                        newDoc.IngestDocument(textContent.Text);
                         DocumentList docList = new DocumentList("documents.lxm");
                         docList.Documents.Add(newDoc);
                         docList.SaveList("documents.lxm");
