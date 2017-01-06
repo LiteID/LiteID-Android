@@ -1,7 +1,8 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Android.Webkit;
+using static Android.Widget.AdapterView;
+using Android.Content;
 
 namespace LiteID
 {
@@ -23,6 +24,9 @@ namespace LiteID
             ListView doclistView = FindViewById<ListView>(Resource.Id.docList);
             doclistAdapter = new DocListAdapter(this, docList);
             doclistView.Adapter = doclistAdapter;
+            doclistView.ItemClick += delegate (object sender, ItemClickEventArgs e)
+            {
+            };
             UpdateList();
 
             bOpt.Click += delegate
