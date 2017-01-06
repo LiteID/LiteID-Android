@@ -90,26 +90,47 @@ namespace LiteID
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060015
-			public const int buttonAdd = 2131099669;
+			// aapt resource value: 0x7f06001e
+			public const int buttonAdd = 2131099678;
 			
 			// aapt resource value: 0x7f060011
 			public const int buttonCreate = 2131099665;
 			
+			// aapt resource value: 0x7f06001b
+			public const int buttonDelete = 2131099675;
+			
 			// aapt resource value: 0x7f060012
 			public const int buttonDiscard = 2131099666;
+			
+			// aapt resource value: 0x7f06001a
+			public const int buttonExport = 2131099674;
 			
 			// aapt resource value: 0x7f06000b
 			public const int buttonFile = 2131099659;
 			
-			// aapt resource value: 0x7f060013
-			public const int buttonOptions = 2131099667;
+			// aapt resource value: 0x7f060017
+			public const int buttonOpen = 2131099671;
 			
-			// aapt resource value: 0x7f060016
-			public const int docList = 2131099670;
+			// aapt resource value: 0x7f06001c
+			public const int buttonOptions = 2131099676;
+			
+			// aapt resource value: 0x7f060019
+			public const int docContent = 2131099673;
 			
 			// aapt resource value: 0x7f060014
-			public const int imageView1 = 2131099668;
+			public const int docDate = 2131099668;
+			
+			// aapt resource value: 0x7f06001f
+			public const int docList = 2131099679;
+			
+			// aapt resource value: 0x7f060013
+			public const int docTitle = 2131099667;
+			
+			// aapt resource value: 0x7f060016
+			public const int docType = 2131099670;
+			
+			// aapt resource value: 0x7f06001d
+			public const int imageView1 = 2131099677;
 			
 			// aapt resource value: 0x7f060000
 			public const int linearLayout1 = 2131099648;
@@ -128,6 +149,12 @@ namespace LiteID
 			
 			// aapt resource value: 0x7f060010
 			public const int linearLayout6 = 2131099664;
+			
+			// aapt resource value: 0x7f060015
+			public const int modeFile = 2131099669;
+			
+			// aapt resource value: 0x7f060018
+			public const int modeText = 2131099672;
 			
 			// aapt resource value: 0x7f06000a
 			public const int radioFile = 2131099658;
@@ -176,10 +203,13 @@ namespace LiteID
 			public const int AddDoc = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Main = 2130903041;
+			public const int DocView = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Options = 2130903042;
+			public const int Main = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int Options = 2130903043;
 			
 			static Layout()
 			{
