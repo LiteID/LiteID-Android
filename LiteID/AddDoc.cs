@@ -12,6 +12,9 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using Android.Content.PM;
+using Android.Database;
+using Android;
+using static Android.Manifest;
 
 namespace LiteID
 {
@@ -23,11 +26,11 @@ namespace LiteID
         Intent.CategoryOpenable,
     }, DataMimeTypes = new[] {
         "text/*",
-        //"image/*",
-        //"audio/*",
-        //"video/*",
-        //"application/*",
-        //"message/*",
+        "image/*",
+        "audio/*",
+        "video/*",
+        "application/*",
+        "message/*",
         "file/*"
     })]
     public class AddDoc : Activity
@@ -35,6 +38,12 @@ namespace LiteID
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M
+                && CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Android.Content.PM.Permission.Granted)
+            {
+                RequestPermissions(new String[] { Manifest.Permission.ReadExternalStorage }, 1);
+            }
 
             SetContentView(Resource.Layout.AddDoc);
             EditText textTitle = FindViewById<EditText>(Resource.Id.textTitle);
@@ -55,16 +64,18 @@ namespace LiteID
                 radioFile.Checked = true;
                 radioText.Checked = false;
                 PackageManager pm = ApplicationContext.PackageManager;
-                Intent getFileIntent = new Intent(Intent.ActionGetContent);
-                getFileIntent.SetType("file/*");
+                Intent getFileIntent;
+                getFileIntent = new Intent(Intent.ActionGetContent);
+                getFileIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                getFileIntent.SetType("*/*");
+                getFileIntent.PutExtra(Intent.ExtraLocalOnly, true);
                 if (getFileIntent.ResolveActivity(pm) != null)
                 {
-                    StartActivityForResult(getFileIntent, 0);
+                    StartActivityForResult(getFileIntent, 1);
                 }
                 else
                 {
-                    Toast toast = Toast.MakeText(this.ApplicationContext, "There are no file browsers!", ToastLength.Long);
-                    toast.Show();
+                    Toast.MakeText(this.ApplicationContext, "There are no file browsers!", ToastLength.Long).Show();
                 }
             };
 
@@ -81,7 +92,25 @@ namespace LiteID
 
             buttonCreate.Click += delegate
             {
-                Finish();
+                if (textTitle.Text != "")
+                {
+                    if (radioFile.Checked && newFileUri != null)
+                    {
+                        Toast.MakeText(this.ApplicationContext, "Adding a file isn't implemented", ToastLength.Long).Show();
+                        //Finish();
+                    }
+                    else if (radioText.Checked && textContent.Text != "")
+                    {
+                        Document newDoc = new Document();
+                        newDoc.RandomDocument(new Random());
+                        newDoc.Name = textTitle.Text;
+                        newDoc.IngestionTime = DateTime.Now;
+                        DocumentList docList = new DocumentList("documents.lxm");
+                        docList.Documents.Add(newDoc);
+                        docList.SaveList("documents.lxm");
+                        Finish();
+                    }
+                }
             };
 
             buttonDiscard.Click += delegate
@@ -116,15 +145,24 @@ namespace LiteID
             if (resultCode == Result.Ok)
             {
                 Uri file = new Uri(data.DataString);
-                if (file.IsFile)
+                Android.Net.Uri aURI = Android.Net.Uri.Parse(file.ToString());
+                Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
+                if (file.Scheme == "file")
                 {
                     newFileUri = file;
-                    Button buttonFile = FindViewById<Button>(Resource.Id.buttonFile);
                     buttonFile.Text = Path.GetFileName(file.AbsolutePath);
+                }
+                else if (file.Scheme == "content")
+                {
+                    newFileUri = file;
+                    string[] columns = { Android.Provider.MediaStore.Files.FileColumns.DisplayName };
+                    ICursor cursor = ContentResolver.Query(data.Data, columns, null, null, null);
+                    cursor.MoveToFirst();
+                    buttonFile.Text = cursor.GetString(0);
                 }
                 else
                 {
-                    Toast toast = Toast.MakeText(this.ApplicationContext, "You can only select a local file on your device", ToastLength.Long);
+                    Toast toast = Toast.MakeText(this.ApplicationContext, "You can only select a file on your device", ToastLength.Long);
                     toast.Show();
                 }
             }

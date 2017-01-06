@@ -9,6 +9,7 @@ namespace LiteID
     public class DocList : Activity
     {
         private DocListAdapter doclistAdapter;
+        private DocumentList docList;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -18,11 +19,11 @@ namespace LiteID
             ImageButton bOpt = FindViewById<ImageButton>(Resource.Id.buttonOptions);
             ImageButton bAdd = FindViewById<ImageButton>(Resource.Id.buttonAdd);
 
-            DocumentList mainlist = new DocumentList("documents.lxm");
+            docList = new DocumentList("documents.lxm");
             ListView doclistView = FindViewById<ListView>(Resource.Id.docList);
-            doclistAdapter = new DocListAdapter(this, mainlist);
+            doclistAdapter = new DocListAdapter(this, docList);
             doclistView.Adapter = doclistAdapter;
-            UpdateList(mainlist);
+            UpdateList();
 
             bOpt.Click += delegate
             {
@@ -34,10 +35,17 @@ namespace LiteID
                 StartActivity(typeof(AddDoc));
             };
         }
-        
-        private void UpdateList(DocumentList list)
+
+        protected override void OnRestart()
         {
-            list.SaveList("documents.lxm");
+            base.OnRestart();
+            docList.LoadList("documents.lxm");
+            doclistAdapter.NotifyDataSetChanged();
+        }
+
+        private void UpdateList()
+        {
+            docList.SaveList("documents.lxm");
             doclistAdapter.NotifyDataSetChanged();
         }
     }

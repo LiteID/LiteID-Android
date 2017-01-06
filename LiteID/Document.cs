@@ -77,6 +77,11 @@ public class DocumentList
 
     public DocumentList(string filepath)
     {
+        LoadList(filepath);
+    }
+
+    public void LoadList(string filepath)
+    {
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         string filename = Path.Combine(path, filepath);
         TextReader reader;
