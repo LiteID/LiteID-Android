@@ -91,9 +91,8 @@ namespace LiteID
                 Uri extURI = FileProvider.GetUriForFile(ApplicationContext, "org.LiteID.fileprovider", outfile);
                 Intent emailIntent = new Intent(Intent.ActionSend);
                 emailIntent.SetType("application/x-liteid-document");
-                emailIntent.PutExtra(Intent.ExtraEmail, new string[] { "Attached is a verifiable LiteID document." });
                 emailIntent.PutExtra(Intent.ExtraSubject, "LiteID Document");
-                emailIntent.PutExtra(Intent.ExtraText, "Shared LiteID Document");
+                emailIntent.PutExtra(Intent.ExtraText, "Attached is a verifiable LiteID document.");
                 emailIntent.PutExtra(Intent.ExtraStream, extURI);
                 emailIntent.AddFlags(ActivityFlags.NewTask);
                 emailIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
