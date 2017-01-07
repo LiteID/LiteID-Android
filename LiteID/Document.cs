@@ -22,12 +22,6 @@ public class Document
     public byte[] OriginID;
     
     private SHA256 Hasher;
-    private string path;
-
-    public Document()
-    {
-        path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-    }
 
     //Ingest file as document
     public static Document IngestDocument(Stream FileDoc, string MimeType)
@@ -86,11 +80,12 @@ public class Document
         File.Delete(tempname);
     }
 
+    //Returns the content of a text document
     public string GetTextContent()
     {
         if (TextDoc)
         {
-    //Returns the content of a text document
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string filename = Path.Combine(path, ID);
             StreamReader reader = new StreamReader(filename);
             string textContent = reader.ReadToEnd();
@@ -102,22 +97,56 @@ public class Document
             return "";
         }
     }
-    //Convert byte array to hex string
-    private static string BytesToHex(byte[] Bytes)
+
+    //Export document and metadata in portable format
+    public Uri ExportDocument()
     {
-        StringBuilder hex = new StringBuilder(Bytes.Length * 2);
-        foreach (byte b in Bytes) hex.AppendFormat("{0:x2}", b);
-        return hex.ToString();
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string output = Path.Combine(path, Name + ".lxe");
+        string tempfolder = Path.Combine(path, "temp-export");
+        string docin = Path.Combine(path, ID);
+        string docout = Path.Combine(tempfolder, "payload");
+        string metaout = Path.Combine(tempfolder, "metadata.lxm");
+
+        Directory.CreateDirectory(tempfolder);
+        File.Copy(docin, docout);
+
+        XmlSerializer docser = new XmlSerializer(typeof(Document));
+        TextWriter writer = new StreamWriter(metaout, false);
+        docser.Serialize(writer, this);
+        writer.Close();
+
+        GZUtils.CompressDirectory(tempfolder, output);
+        Directory.Delete(tempfolder, true);
+        return new Uri(output);
     }
 
-        string[] names = { "Document", "Work Thing", "Name", "ID", "Video", "Picture", "Evidence", "Incriminating Record", "Stolen SSN", "Unencrypted Password", "Unfinished App", "Joke Text", "Contract", "Loan" };
-        Name = names.PickRandom();
-        Name += " #" + (gen.Next(99) + 1);
+    //Import 
+    public static Document ImportDocument(Stream LXE)
+    {
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+        string input = Path.Combine(path, "import.temp");
+        string tempfolder = Path.Combine(path, "temp-import");
+        string docin = Path.Combine(tempfolder, "payload");
+        string metain = Path.Combine(tempfolder, "metadata.lxm");
 
-        DateTime start = new DateTime(2016, 1, 1);
-        //int range = (DateTime.Today - start).Days;
-        int range = 365;
-        IngestionTime = start.AddDays(gen.Next(range));
+        Directory.CreateDirectory(tempfolder);
+        Stream tempfile = File.OpenWrite(input);
+        LXE.CopyTo(tempfile);
+        LXE.Close();
+        tempfile.Close();
+        GZUtils.DecompressToDirectory(input, tempfolder);
+        File.Delete(input);
+
+        XmlSerializer docser = new XmlSerializer(typeof(Document));
+        TextReader reader = new StreamReader(input);
+        Document newDoc = (Document)docser.Deserialize(reader);
+
+        string docout = Path.Combine(path, newDoc.ID);
+        File.Move(docin, docout);
+        Directory.Delete(tempfolder, true);
+
+        return newDoc;
     }
 }
 
@@ -151,6 +180,7 @@ public class DocumentList
         catch
         {
             string alternate = Path.Combine(path, filepath + ".old");
+            reader.Close();
             File.Move(filename, alternate);
             return;
         }

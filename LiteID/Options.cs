@@ -48,6 +48,7 @@ namespace LiteID
                 Random random = new Random();
                 random.NextBytes(Config.BlockchainID);
                 textCurrentID.Text = "0x" + LiteIDContext.BytesToHex(Config.BlockchainID);
+                Config.Configured = true;
                 Config.Save(ConfigFile);
             };
 

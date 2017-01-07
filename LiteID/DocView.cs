@@ -5,6 +5,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V4.Content;
 using System.IO;
+using Android.Net;
 
 namespace LiteID
 {
@@ -20,7 +21,6 @@ namespace LiteID
             Context = new LiteIDContext();
 
             Document CurrentDoc;
-            DocumentList DocList = new DocumentList("documents.lxm");
             if (Intent.HasExtra("TargetID"))
             {
                 string TargetID = Intent.GetStringExtra("TargetID");
@@ -65,15 +65,13 @@ namespace LiteID
                     string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
                     string filename = Path.Combine(path, CurrentDoc.ID);
                     Java.IO.File outfile = new Java.IO.File(filename);
-                    Android.Net.Uri extURI = FileProvider.GetUriForFile(
-                        ApplicationContext, "org.LiteID.fileprovider", outfile);
+                    Uri extURI = FileProvider.GetUriForFile(ApplicationContext, "org.LiteID.fileprovider", outfile);
                     Intent viewIntent = new Intent(Intent.ActionView);
                     viewIntent.SetDataAndType(extURI, CurrentDoc.MimeType);
                     viewIntent.AddFlags(ActivityFlags.NewTask);
                     viewIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-
-                    Android.Content.PM.PackageManager pm = ApplicationContext.PackageManager;
-                    if (viewIntent.ResolveActivity(pm) != null)
+                    
+                    if (viewIntent.ResolveActivity(ApplicationContext.PackageManager) != null)
                     {
                         StartActivity(viewIntent);
                     }
@@ -88,7 +86,26 @@ namespace LiteID
 
             buttonExport.Click += delegate
             {
-                Toast.MakeText(this.ApplicationContext, "Not Yet Implemented", ToastLength.Long).Show();
+                System.Uri PackedDoc = CurrentDoc.ExportDocument();
+                Java.IO.File outfile = new Java.IO.File(PackedDoc.AbsolutePath);
+                Uri extURI = FileProvider.GetUriForFile(ApplicationContext, "org.LiteID.fileprovider", outfile);
+                Intent emailIntent = new Intent(Intent.ActionSend);
+                emailIntent.SetType("application/x-liteid-document");
+                emailIntent.PutExtra(Intent.ExtraEmail, new string[] { "Attached is a verifiable LiteID document." });
+                emailIntent.PutExtra(Intent.ExtraSubject, "LiteID Document");
+                emailIntent.PutExtra(Intent.ExtraText, "Shared LiteID Document");
+                emailIntent.PutExtra(Intent.ExtraStream, extURI);
+                emailIntent.AddFlags(ActivityFlags.NewTask);
+                emailIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+                
+                if (emailIntent.ResolveActivity(ApplicationContext.PackageManager) != null)
+                {
+                    StartActivity(Intent.CreateChooser(emailIntent, "Share Document"));
+                }
+                else
+                {
+                    Toast.MakeText(this.ApplicationContext, "You don't have any apps that can share this.", ToastLength.Long).Show();
+                }
             };
 
             buttonDelete.Click += delegate
@@ -102,8 +119,8 @@ namespace LiteID
                         string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
                         string filename = Path.Combine(path, CurrentDoc.ID);
                         File.Delete(filename);
-                        DocList.Documents.Remove(CurrentDoc);
-                        DocList.SaveList(Context.DocStoreFile);
+                        Context.DocStore.Documents.Remove(CurrentDoc);
+                        Context.DocStore.SaveList(Context.DocStoreFile);
                         Finish();
                     })
                    .SetNegativeButton("No", delegate { })
