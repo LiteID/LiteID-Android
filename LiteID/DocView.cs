@@ -58,7 +58,25 @@ namespace LiteID
 
                 buttonOpen.Click += delegate
                 {
-                    Toast.MakeText(this.ApplicationContext, "Not Yet Implemented", ToastLength.Long).Show();
+                    string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                    string filename = Path.Combine(path, CurrentDoc.ID);
+                    Java.IO.File outfile = new Java.IO.File(filename);
+                    Android.Net.Uri extURI = FileProvider.GetUriForFile(
+                        ApplicationContext, "org.LiteID.fileprovider", outfile);
+                    Intent viewIntent = new Intent(Intent.ActionView);
+                    viewIntent.SetDataAndType(extURI, CurrentDoc.MimeType);
+                    viewIntent.AddFlags(ActivityFlags.NewTask);
+                    viewIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+
+                    Android.Content.PM.PackageManager pm = ApplicationContext.PackageManager;
+                    if (viewIntent.ResolveActivity(pm) != null)
+                    {
+                        StartActivity(viewIntent);
+                    }
+                    else
+                    {
+                        Toast.MakeText(this.ApplicationContext, "You don't have any apps that can open this.", ToastLength.Long).Show();
+                    }
                 };
             }
             Button buttonExport = FindViewById<Button>(Resource.Id.buttonExport);

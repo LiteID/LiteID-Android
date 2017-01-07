@@ -3,5 +3,15 @@
 	<uses-sdk android:minSdkVersion="9" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="LiteID" android:icon="@drawable/icon4sc_256" android:theme="@style/LiteID.Main"></application>
+	<application android:label="LiteID" android:icon="@drawable/icon4sc_256" android:theme="@style/LiteID.Main">
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="org.LiteID.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/paths" />
+    </provider>
+  </application>
 </manifest>

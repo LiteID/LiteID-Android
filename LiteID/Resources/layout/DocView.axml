@@ -41,20 +41,23 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/docTitle" />
+            android:id="@+id/docTitle"
+            android:textColor="#FF272727" />
         <TextView
             android:text="Added on: Some Date"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/docDate" />
+            android:id="@+id/docDate"
+            android:textColor="#FF666666" />
         <TextView
             android:text="Content:"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView5"
-            android:layout_marginTop="10.0dp" />
+            android:layout_marginTop="10.0dp"
+            android:textColor="#FF272727" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -66,7 +69,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/docType" />
+                android:id="@+id/docType"
+                android:textColor="#FF666666" />
             <Button
                 android:text="Open File"
                 android:layout_width="match_parent"
@@ -87,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/docContent"
-                android:textColor="#FF222222" />
+                android:textColor="#FF272727" />
         </LinearLayout>
         <Button
             android:text="Export and Email"
