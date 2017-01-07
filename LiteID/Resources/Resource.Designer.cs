@@ -90,8 +90,8 @@ namespace LiteID
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070020
-			public const int buttonAdd = 2131165216;
+			// aapt resource value: 0x7f070021
+			public const int buttonAdd = 2131165217;
 			
 			// aapt resource value: 0x7f070011
 			public const int buttonCreate = 2131165201;
@@ -108,44 +108,44 @@ namespace LiteID
 			// aapt resource value: 0x7f07000b
 			public const int buttonFile = 2131165195;
 			
-			// aapt resource value: 0x7f070022
-			public const int buttonGenerateAccount = 2131165218;
-			
-			// aapt resource value: 0x7f070017
-			public const int buttonOpen = 2131165207;
-			
-			// aapt resource value: 0x7f07001e
-			public const int buttonOptions = 2131165214;
-			
 			// aapt resource value: 0x7f070023
-			public const int buttonResetID = 2131165219;
+			public const int buttonGenerateAccount = 2131165219;
 			
-			// aapt resource value: 0x7f07001d
-			public const int buttonSave = 2131165213;
-			
-			// aapt resource value: 0x7f070026
-			public const int buttonSaveRPC = 2131165222;
-			
-			// aapt resource value: 0x7f07001c
-			public const int buttonVerify = 2131165212;
-			
-			// aapt resource value: 0x7f070019
-			public const int docContent = 2131165209;
-			
-			// aapt resource value: 0x7f070014
-			public const int docDate = 2131165204;
-			
-			// aapt resource value: 0x7f070021
-			public const int docList = 2131165217;
-			
-			// aapt resource value: 0x7f070013
-			public const int docTitle = 2131165203;
-			
-			// aapt resource value: 0x7f070016
-			public const int docType = 2131165206;
+			// aapt resource value: 0x7f070018
+			public const int buttonOpen = 2131165208;
 			
 			// aapt resource value: 0x7f07001f
-			public const int imageView1 = 2131165215;
+			public const int buttonOptions = 2131165215;
+			
+			// aapt resource value: 0x7f070024
+			public const int buttonResetID = 2131165220;
+			
+			// aapt resource value: 0x7f07001e
+			public const int buttonSave = 2131165214;
+			
+			// aapt resource value: 0x7f070027
+			public const int buttonSaveRPC = 2131165223;
+			
+			// aapt resource value: 0x7f07001d
+			public const int buttonVerify = 2131165213;
+			
+			// aapt resource value: 0x7f07001a
+			public const int docContent = 2131165210;
+			
+			// aapt resource value: 0x7f070015
+			public const int docDate = 2131165205;
+			
+			// aapt resource value: 0x7f070022
+			public const int docList = 2131165218;
+			
+			// aapt resource value: 0x7f070014
+			public const int docTitle = 2131165204;
+			
+			// aapt resource value: 0x7f070017
+			public const int docType = 2131165207;
+			
+			// aapt resource value: 0x7f070020
+			public const int imageView1 = 2131165216;
 			
 			// aapt resource value: 0x7f070000
 			public const int linearLayout1 = 2131165184;
@@ -165,14 +165,14 @@ namespace LiteID
 			// aapt resource value: 0x7f070010
 			public const int linearLayout6 = 2131165200;
 			
-			// aapt resource value: 0x7f070015
-			public const int modeFile = 2131165205;
+			// aapt resource value: 0x7f070016
+			public const int modeFile = 2131165206;
 			
 			// aapt resource value: 0x7f07002a
 			public const int modeRemote = 2131165226;
 			
-			// aapt resource value: 0x7f070018
-			public const int modeText = 2131165208;
+			// aapt resource value: 0x7f070019
+			public const int modeText = 2131165209;
 			
 			// aapt resource value: 0x7f07000a
 			public const int radioFile = 2131165194;
@@ -183,20 +183,20 @@ namespace LiteID
 			// aapt resource value: 0x7f07000e
 			public const int radioText = 2131165198;
 			
-			// aapt resource value: 0x7f070027
-			public const int scrollView1 = 2131165223;
+			// aapt resource value: 0x7f070013
+			public const int scrollView1 = 2131165203;
 			
 			// aapt resource value: 0x7f07000f
 			public const int textContent = 2131165199;
 			
-			// aapt resource value: 0x7f070024
-			public const int textCurrentID = 2131165220;
-			
-			// aapt resource value: 0x7f07001b
-			public const int textOriginID = 2131165211;
-			
 			// aapt resource value: 0x7f070025
-			public const int textRPCAddress = 2131165221;
+			public const int textCurrentID = 2131165221;
+			
+			// aapt resource value: 0x7f07001c
+			public const int textOriginID = 2131165212;
+			
+			// aapt resource value: 0x7f070026
+			public const int textRPCAddress = 2131165222;
 			
 			// aapt resource value: 0x7f070004
 			public const int textTitle = 2131165188;
@@ -216,8 +216,8 @@ namespace LiteID
 			// aapt resource value: 0x7f07000c
 			public const int textView5 = 2131165196;
 			
-			// aapt resource value: 0x7f07001a
-			public const int textView6 = 2131165210;
+			// aapt resource value: 0x7f07001b
+			public const int textView6 = 2131165211;
 			
 			static Id()
 			{
