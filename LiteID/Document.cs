@@ -87,6 +87,10 @@ public class Document
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string filename = Path.Combine(path, ID);
+
+            if (!File.Exists(filename))
+                filename = Path.Combine(path, "import/" + ID);
+
             StreamReader reader = new StreamReader(filename);
             string textContent = reader.ReadToEnd();
             reader.Close();
@@ -153,7 +157,7 @@ public class Document
             File.Delete(docout);
         File.Move(docin, docout);
         Directory.Delete(tempfolder, true);
-
+        
         return newDoc;
     }
 }
