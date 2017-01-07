@@ -145,7 +145,16 @@ public class DocumentList
         {
             return;
         }
-        Documents = (List<Document>)dlser.Deserialize(reader);
+        try
+        {
+            Documents = (List<Document>)dlser.Deserialize(reader);
+        }
+        catch
+        {
+            string alternate = Path.Combine(path, filepath + ".old");
+            File.Move(filename, alternate);
+            return;
+        }
         reader.Close();
     }
 
