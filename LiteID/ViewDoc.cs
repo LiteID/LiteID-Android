@@ -10,7 +10,7 @@ using Android.Net;
 namespace LiteID
 {
     [Activity(Label = "LiteID Document")]
-    public class DocView : Activity
+    public class ViewDoc : Activity
     {
         private LiteIDContext Context;
 
@@ -40,7 +40,7 @@ namespace LiteID
                 return;
             }
 
-            SetContentView(Resource.Layout.DocView);
+            SetContentView(Resource.Layout.ViewDoc);
             TextView docTitle = FindViewById<TextView>(Resource.Id.docTitle);
             docTitle.Text = CurrentDoc.Name;
             TextView docDate = FindViewById<TextView>(Resource.Id.docDate);

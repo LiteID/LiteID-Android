@@ -221,13 +221,15 @@ namespace LiteID
 			public const int AddDoc = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int DocView = 2130903041;
 			
 			// aapt resource value: 0x7f030002
 			public const int Main = 2130903042;
 			
 			// aapt resource value: 0x7f030003
 			public const int Options = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int ViewDoc = 2130903044;
 			
 			static Layout()
 			{
