@@ -25,6 +25,7 @@ public class Document
     {
         Document newDoc = new Document();
         newDoc.MimeType = MimeType;
+        newDoc.TextDoc = false;
         GIngestDocument(newDoc, FileDoc);
         return newDoc;
     }
@@ -40,6 +41,7 @@ public class Document
 
         Document newDoc = new Document();
         newDoc.MimeType = "text/plain";
+        newDoc.TextDoc = true;
         GIngestDocument(newDoc, stream);
         return newDoc;
     }

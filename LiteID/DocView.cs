@@ -58,7 +58,7 @@ namespace LiteID
 
                 buttonOpen.Click += delegate
                 {
-
+                    Toast.MakeText(this.ApplicationContext, "Not Yet Implemented", ToastLength.Long).Show();
                 };
             }
             Button buttonExport = FindViewById<Button>(Resource.Id.buttonExport);
