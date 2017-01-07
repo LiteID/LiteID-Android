@@ -39,8 +39,14 @@ namespace LiteID
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            
+
             Context = new LiteIDContext();
+            if (!Context.Config.Configured)
+            {
+                Toast.MakeText(this.ApplicationContext, "You must set up your ID.", ToastLength.Long).Show();
+                Finish();
+            }
+
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M
                 && CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Android.Content.PM.Permission.Granted)
             {

@@ -108,11 +108,20 @@ namespace LiteID
 			// aapt resource value: 0x7f07000b
 			public const int buttonFile = 2131165195;
 			
+			// aapt resource value: 0x7f070020
+			public const int buttonGenerateAccount = 2131165216;
+			
 			// aapt resource value: 0x7f070017
 			public const int buttonOpen = 2131165207;
 			
 			// aapt resource value: 0x7f07001c
 			public const int buttonOptions = 2131165212;
+			
+			// aapt resource value: 0x7f070021
+			public const int buttonResetID = 2131165217;
+			
+			// aapt resource value: 0x7f070024
+			public const int buttonSaveRPC = 2131165220;
 			
 			// aapt resource value: 0x7f070019
 			public const int docContent = 2131165209;
@@ -168,6 +177,12 @@ namespace LiteID
 			// aapt resource value: 0x7f07000f
 			public const int textContent = 2131165199;
 			
+			// aapt resource value: 0x7f070022
+			public const int textCurrentID = 2131165218;
+			
+			// aapt resource value: 0x7f070023
+			public const int textRPCAddress = 2131165219;
+			
 			// aapt resource value: 0x7f070004
 			public const int textTitle = 2131165188;
 			
@@ -185,6 +200,9 @@ namespace LiteID
 			
 			// aapt resource value: 0x7f07000c
 			public const int textView5 = 2131165196;
+			
+			// aapt resource value: 0x7f070025
+			public const int textView6 = 2131165221;
 			
 			static Id()
 			{
