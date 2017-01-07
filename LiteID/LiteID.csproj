@@ -69,6 +69,7 @@
     <Compile Include="CmprDir.cs" />
     <Compile Include="DocListAdapater.cs" />
     <Compile Include="ViewDoc.cs" />
+    <Compile Include="ImportDoc.cs" />
     <Compile Include="LiteID.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="AddDoc.cs" />
@@ -100,6 +101,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ViewDoc.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ImportDoc.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

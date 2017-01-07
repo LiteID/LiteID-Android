@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFAFAFA">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/linearLayout1"
+        android:background="@drawable/bg_grad_d_256"
+        android:gravity="left"
+        android:paddingBottom="4dp"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:paddingLeft="15dp">
+        <TextView
+            android:text="Import Document"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1"
+            android:layout_gravity="center_vertical"
+            android:textColor="#FFFFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+        <TextView
+            android:text="Document Title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/docTitle"
+            android:textColor="#FF272727" />
+        <TextView
+            android:text="Added to blockchain on: Some Date"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/docDate"
+            android:textColor="#FF666666" />
+        <TextView
+            android:text="Content:"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_marginTop="10.0dp"
+            android:textColor="#FF272727" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/modeFile"
+            android:visibility="gone">
+            <TextView
+                android:text="Type: mime/type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/docType"
+                android:textColor="#FF666666" />
+            <Button
+                android:text="Open File"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonOpen" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/modeText"
+            android:visibility="gone">
+            <TextView
+                android:text="Text document content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/docContent"
+                android:textColor="#FF272727" />
+        </LinearLayout>
+        <TextView
+            android:text="Originating Identity:"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            android:textColor="#FF272727"
+            android:layout_marginTop="15dp" />
+        <TextView
+            android:text="0xFEDCBA9876543210FEDCBA9876543210"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textOriginID"
+            android:textColor="#FF666666" />
+        <Button
+            android:text="Verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonVerify"
+            android:layout_marginTop="10dp" />
+        <Button
+            android:text="Save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSave" />
+        <Button
+            android:text="Discard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonDiscard" />
+    </LinearLayout>
+</LinearLayout>

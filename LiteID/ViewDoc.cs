@@ -4,8 +4,11 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Android.Support.V4.Content;
-using System.IO;
 using Android.Net;
+using System.IO;
+using System.Linq;
+using Android.Content.PM;
+using System.Collections.Generic;
 
 namespace LiteID
 {
@@ -81,6 +84,7 @@ namespace LiteID
                     }
                 };
             }
+
             Button buttonExport = FindViewById<Button>(Resource.Id.buttonExport);
             Button buttonDelete = FindViewById<Button>(Resource.Id.buttonDelete);
 
@@ -131,6 +135,30 @@ namespace LiteID
                    .SetNegativeButton("No", delegate { })
                    .Show();
             };
+
+            if (CurrentDoc.OriginID == null || !CurrentDoc.OriginID.SequenceEqual(Context.Config.BlockchainID))
+            {
+                LinearLayout modeRemote = FindViewById<LinearLayout>(Resource.Id.modeRemote);
+                TextView textOriginID = FindViewById<TextView>(Resource.Id.textOriginID);
+                Button buttonVerify = FindViewById<Button>(Resource.Id.buttonVerify);
+
+                modeRemote.Visibility = ViewStates.Visible;
+                if (CurrentDoc.OriginID != null)
+                {
+                    textOriginID.Text = "0x" + LiteIDContext.BytesToHex(CurrentDoc.OriginID);
+                }
+                else
+                {
+                    textOriginID.Text = "Local Document";
+                    buttonVerify.Visibility = ViewStates.Gone;
+                }
+
+                buttonVerify.Click += delegate
+                {
+                    //TODO: Implement this
+                    Toast.MakeText(this.ApplicationContext, "Verified", ToastLength.Long).Show();
+                };
+            }
         }
     }
 }
