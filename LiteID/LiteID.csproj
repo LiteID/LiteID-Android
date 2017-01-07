@@ -69,6 +69,7 @@
     <Compile Include="CmprDir.cs" />
     <Compile Include="DocListAdapater.cs" />
     <Compile Include="DocView.cs" />
+    <Compile Include="LiteID.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="AddDoc.cs" />
     <Compile Include="Document.cs" />

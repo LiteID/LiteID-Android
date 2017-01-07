@@ -11,9 +11,13 @@ namespace LiteID
     [Activity(Label = "LiteID Document")]
     public class DocView : Activity
     {
+        private LiteIDContext Context;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            Context = new LiteIDContext();
 
             Document CurrentDoc;
             DocumentList DocList = new DocumentList("documents.lxm");
@@ -22,7 +26,7 @@ namespace LiteID
                 string TargetID = Intent.GetStringExtra("TargetID");
                 try
                 {
-                    CurrentDoc = DocList.GetDocumentById(TargetID);
+                    CurrentDoc = Context.DocStore.GetDocumentById(TargetID);
                 }
                 catch
                 {
@@ -99,7 +103,7 @@ namespace LiteID
                         string filename = Path.Combine(path, CurrentDoc.ID);
                         File.Delete(filename);
                         DocList.Documents.Remove(CurrentDoc);
-                        DocList.SaveList("documents.lxm");
+                        DocList.SaveList(Context.DocStoreFile);
                         Finish();
                     })
                    .SetNegativeButton("No", delegate { })

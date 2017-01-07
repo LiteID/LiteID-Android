@@ -34,10 +34,13 @@ namespace LiteID
     })]
     public class AddDoc : Activity
     {
+        private LiteIDContext Context;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             
+            Context = new LiteIDContext();
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M
                 && CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Android.Content.PM.Permission.Granted)
             {
@@ -97,18 +100,18 @@ namespace LiteID
                     {
                         Document newDoc = Document.IngestDocument(ContentResolver.OpenInputStream(newFileUri), newMimeType);
                         newDoc.Name = textTitle.Text;
-                        DocumentList docList = new DocumentList("documents.lxm");
-                        docList.Documents.Add(newDoc);
-                        docList.SaveList("documents.lxm");
+                        newDoc.OriginID = Context.Config.BlockchainID;
+                        Context.DocStore.Documents.Add(newDoc);
+                        Context.DocStore.SaveList("documents.lxm");
                         Finish();
                     }
                     else if (radioText.Checked && textContent.Text != "")
                     {
                         Document newDoc = Document.IngestDocument(textContent.Text);
                         newDoc.Name = textTitle.Text;
-                        DocumentList docList = new DocumentList("documents.lxm");
-                        docList.Documents.Add(newDoc);
-                        docList.SaveList("documents.lxm");
+                        newDoc.OriginID = Context.Config.BlockchainID;
+                        Context.DocStore.Documents.Add(newDoc);
+                        Context.DocStore.SaveList("documents.lxm");
                         Finish();
                     }
                     else

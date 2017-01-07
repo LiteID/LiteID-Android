@@ -10,24 +10,25 @@ namespace LiteID
     public class DocList : Activity
     {
         private DocListAdapter doclistAdapter;
-        private DocumentList docList;
+        private LiteIDContext Context;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+            Context = new LiteIDContext();
+
             SetContentView (Resource.Layout.Main);
             ImageButton bOpt = FindViewById<ImageButton>(Resource.Id.buttonOptions);
             ImageButton bAdd = FindViewById<ImageButton>(Resource.Id.buttonAdd);
 
-            docList = new DocumentList("documents.lxm");
             ListView doclistView = FindViewById<ListView>(Resource.Id.docList);
-            doclistAdapter = new DocListAdapter(this, docList);
+            doclistAdapter = new DocListAdapter(this, Context.DocStore);
             doclistView.Adapter = doclistAdapter;
             doclistView.ItemClick += delegate (object sender, ItemClickEventArgs e)
             {
                 Intent docView = new Intent(this, typeof(DocView));
-                docView.PutExtra("TargetID", docList.Documents[e.Position].ID);
+                docView.PutExtra("TargetID", Context.DocStore.Documents[e.Position].ID);
                 StartActivity(docView);
             };
             UpdateList();
@@ -46,13 +47,14 @@ namespace LiteID
         protected override void OnRestart()
         {
             base.OnRestart();
-            docList.LoadList("documents.lxm");
+            Context.DocStore.LoadList(Context.DocStoreFile);
+            Context.Config = LiteIDConfig.Load(Context.ConfigFile);
             doclistAdapter.NotifyDataSetChanged();
         }
 
         private void UpdateList()
         {
-            docList.SaveList("documents.lxm");
+            Context.DocStore.SaveList(Context.DocStoreFile);
             doclistAdapter.NotifyDataSetChanged();
         }
     }

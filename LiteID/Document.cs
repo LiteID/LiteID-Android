@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using CmprDir;
+using LiteID;
 
 [Serializable]
 public class Document
@@ -14,11 +15,19 @@ public class Document
     public string ID;
     public byte[] Hash;
     public byte[] Salt;
-    private SHA256 Hasher;
     public string Name;
     public string MimeType;
     public bool TextDoc; //True is yes
     public DateTime IngestionTime;
+    public byte[] OriginID;
+    
+    private SHA256 Hasher;
+    private string path;
+
+    public Document()
+    {
+        path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+    }
 
     //Ingest file as document
     public static Document IngestDocument(Stream FileDoc, string MimeType)
@@ -69,7 +78,7 @@ public class Document
         random.NextBytes(newDoc.Salt);
         newDoc.Hasher.TransformFinalBlock(newDoc.Salt, 0, newDoc.Salt.Length);
         newDoc.Hash = newDoc.Hasher.Hash;
-        newDoc.ID = BytesToHex(newDoc.Hash);
+        newDoc.ID = LiteIDContext.BytesToHex(newDoc.Hash);
         newDoc.Hasher.Dispose();
 
         string filename = Path.Combine(path, newDoc.ID);
@@ -81,7 +90,7 @@ public class Document
     {
         if (TextDoc)
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+    //Returns the content of a text document
             string filename = Path.Combine(path, ID);
             StreamReader reader = new StreamReader(filename);
             string textContent = reader.ReadToEnd();
@@ -100,11 +109,6 @@ public class Document
         foreach (byte b in Bytes) hex.AppendFormat("{0:x2}", b);
         return hex.ToString();
     }
-    
-    //Initialize document with random data
-    public void RandomDocument(Random gen)
-    {
-        ID = Hash.ToString();
 
         string[] names = { "Document", "Work Thing", "Name", "ID", "Video", "Picture", "Evidence", "Incriminating Record", "Stolen SSN", "Unencrypted Password", "Unfinished App", "Joke Text", "Contract", "Loan" };
         Name = names.PickRandom();
@@ -121,11 +125,6 @@ public class DocumentList
 {
     public List<Document> Documents = new List<Document>();
     private XmlSerializer dlser = new XmlSerializer(typeof(List<Document>));
-
-    public DocumentList()
-    {
-
-    }
 
     public DocumentList(string filepath)
     {
@@ -170,18 +169,5 @@ public class DocumentList
     public Document GetDocumentById(string ID)
     {
         return Documents.Find(x => x.ID == ID);
-    }
-
-    public void Randomize()
-    {
-        Documents.Clear();
-        Random random = new Random();
-        int count = random.Next(30);
-        for (int i = 0; i < count; i++)
-        {
-            Document inter = new Document();
-            inter.RandomDocument(random);
-            Documents.Add(inter);
-        }
     }
 }
