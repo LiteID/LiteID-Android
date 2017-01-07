@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="CmprDir.cs" />
     <Compile Include="DocListAdapater.cs" />
-    <Compile Include="DocView.cs" />
+    <Compile Include="ViewDoc.cs" />
     <Compile Include="LiteID.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="AddDoc.cs" />
@@ -99,7 +99,7 @@
     <AndroidResource Include="Resources\drawable\group_border.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\DocView.axml">
+    <AndroidResource Include="Resources\layout\ViewDoc.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

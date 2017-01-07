@@ -90,7 +90,7 @@ namespace LiteID
                 Java.IO.File outfile = new Java.IO.File(PackedDoc.AbsolutePath);
                 Uri extURI = FileProvider.GetUriForFile(ApplicationContext, "org.LiteID.fileprovider", outfile);
                 Intent emailIntent = new Intent(Intent.ActionSend);
-                emailIntent.SetType("application/x-liteid-document");
+                emailIntent.SetType("application/octet-stream");
                 emailIntent.PutExtra(Intent.ExtraSubject, "LiteID Document");
                 emailIntent.PutExtra(Intent.ExtraText, "Attached is a verifiable LiteID document.");
                 emailIntent.PutExtra(Intent.ExtraStream, extURI);
@@ -99,6 +99,12 @@ namespace LiteID
                 
                 if (emailIntent.ResolveActivity(ApplicationContext.PackageManager) != null)
                 {
+                    IList<ResolveInfo> resInfoList = ApplicationContext.PackageManager.QueryIntentActivities(emailIntent, PackageInfoFlags.MatchDefaultOnly);
+                    foreach (ResolveInfo resolveInfo in resInfoList)
+                    {
+                        string packageName = resolveInfo.ActivityInfo.PackageName;
+                        ApplicationContext.GrantUriPermission(packageName, extURI, ActivityFlags.GrantReadUriPermission);
+                    }
                     StartActivity(Intent.CreateChooser(emailIntent, "Share Document"));
                 }
                 else

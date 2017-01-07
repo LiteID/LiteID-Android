@@ -15,14 +15,18 @@ namespace LiteID
 
         public LiteIDContext()
         {
-            DocStore = new DocumentList(DocStoreFile);
-            Config = LiteIDConfig.Load(ConfigFile);
+            Initialize();
         }
 
         public LiteIDContext(string DocStoreFile, string ConfigFile)
         {
             this.DocStoreFile = DocStoreFile;
             this.ConfigFile = ConfigFile;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             DocStore = new DocumentList(DocStoreFile);
             Config = LiteIDConfig.Load(ConfigFile);
         }
@@ -62,6 +66,7 @@ namespace LiteID
             }
             catch
             {
+                Android.Util.Log.Info("liteid-config", "Config file missing!");
                 return new LiteIDConfig();
             }
             try

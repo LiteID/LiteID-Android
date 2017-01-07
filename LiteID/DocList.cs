@@ -27,7 +27,7 @@ namespace LiteID
             doclistView.Adapter = doclistAdapter;
             doclistView.ItemClick += delegate (object sender, ItemClickEventArgs e)
             {
-                Intent docView = new Intent(this, typeof(DocView));
+                Intent docView = new Intent(this, typeof(ViewDoc));
                 docView.PutExtra("TargetID", Context.DocStore.Documents[e.Position].ID);
                 StartActivity(docView);
             };

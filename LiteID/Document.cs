@@ -102,7 +102,6 @@ public class Document
     public Uri ExportDocument()
     {
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-        string output = Path.Combine(path, Name + ".lxe");
         string tempfolder = Path.Combine(path, "temp-export");
         string docin = Path.Combine(path, ID);
         string docout = Path.Combine(tempfolder, "payload");
@@ -116,6 +115,10 @@ public class Document
         docser.Serialize(writer, this);
         writer.Close();
 
+        string exportDir = Path.Combine(path, "export");
+        string output = Path.Combine(exportDir, Name.Replace(' ', '_') + ".lxe");
+        if (!Directory.Exists(exportDir))
+            Directory.CreateDirectory(exportDir);
         GZUtils.CompressDirectory(tempfolder, output);
         Directory.Delete(tempfolder, true);
         return new Uri(output);
@@ -139,10 +142,15 @@ public class Document
         File.Delete(input);
 
         XmlSerializer docser = new XmlSerializer(typeof(Document));
-        TextReader reader = new StreamReader(input);
+        TextReader reader = new StreamReader(metain);
         Document newDoc = (Document)docser.Deserialize(reader);
 
-        string docout = Path.Combine(path, newDoc.ID);
+        string importDir = Path.Combine(path, "import");
+        string docout = Path.Combine(importDir, newDoc.ID);
+        if (!Directory.Exists(importDir))
+            Directory.CreateDirectory(importDir);
+        if (File.Exists(docout))
+            File.Delete(docout);
         File.Move(docin, docout);
         Directory.Delete(tempfolder, true);
 
