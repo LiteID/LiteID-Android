@@ -142,7 +142,7 @@ namespace LiteID
                 radioText.Checked = true;
                 textContent.Text = Intent.GetStringExtra(Intent.ExtraText);
             }
-            else if (Intent.DataString != null)
+            else if (Intent.Data != null)
             {
                 OnActivityResult(1, Result.Ok, Intent);
             }
